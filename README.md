@@ -23,18 +23,18 @@ There are 3 type of parsing for the creation of the discord architecture:
 - 1 Category per CTF
   - 1 Channel per category
     - 1 Thread in the same channel for each Challenge with the same category  
-![Alt text](./.github/1.png)  
+![Alt text](./github/1.png)  
 
 #### Mode 2:
 - 1 Category
   - 1 Channel pet CTF
     - 1 Thread in the same channel for each Challenge  
-![Alt text](./.github/2.png)  
+![Alt text](./github/2.png)  
 
 #### Mode 3:
 - 1 Category for 1 CTF
   - 1 Channel for each Challenge  
-![Alt text](./.github/3.png)  
+![Alt text](./github/3.png)  
 
 *(If, no user/pass is provided : the tool will try generate one random)*
 
@@ -62,6 +62,6 @@ There are 3 type of parsing for the creation of the discord architecture:
 
 ### Example : 
 
-![Alt text](./.github/4.png)  
+![Alt text](./github/4.png)  
 
-![Alt text](./.github/5.png)
+![Alt text](./github/5.png)
