@@ -1,7 +1,7 @@
 # Discord-CTFD-Parser
 This tools is used to create automatically discord threads by scraping ctfd plateform and collecting name , category , description and points of challenges.
 
-![Alt text](./github/0.png')
+![Alt text](./github/0.png)
 
 ## Installation
 ```bash
