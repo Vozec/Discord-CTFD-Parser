@@ -48,6 +48,10 @@ There are 3 type of parsing for the creation of the discord architecture:
   -> Set token account to login & bypass recaptcha
 ```
 ```
+?flag
+  -> Add \'🚩\' to the name of a channel
+```
+```
 ?gen <Url>
   -> Try to generate new random credentials
 ```
