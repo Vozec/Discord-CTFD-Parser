@@ -24,12 +24,12 @@ There are 3 type of parsing for the creation of the discord architecture:
 - 1 Category per CTF
   - 1 Channel per category
     - 1 Thread in the same channel for each Challenge with the same category  
-![Alt text](./github/1.png)  
+![Alt text](./github/2.png)  
 
 #### Mode 2:
 - 1 Category per CTF
   - 1 Channel per Challenge
-![Alt text](./github/2.png)  
+![Alt text](./github/1.png)  
 
 #### Mode 3:
 - 1 Category for 1 CTF
