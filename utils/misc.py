@@ -4,26 +4,37 @@
 # _date_ : 20/08/2022
 
 from requests.compat import urlparse
-import names,random,re
+import names,random,re,requests,os.path
 
 def isAdmin(ctx):
-	if(ctx.author.guild_permissions.manage_channels):
-		return True
-	return False
+	return ctx.author.guild_permissions.manage_channels
 
 def Clean_Url(url):
-	url = url.rstrip('/')
-	return 'https://%s'%urlparse(url).hostname
+	return 'https://%s'%urlparse(url.rstrip('/')).hostname
+
+def Check_Ctfd(url):
+    try:
+        res = requests.get(url).text
+        if('Powered by CTFd' in res):
+            return True
+        elif('We are checking your browser' in res):
+            return True
+        return False
+    except Exception as ex:
+        logger('Error during ctfd check : %s'%str(ex),"error",1,0)
+        return False
+
 
 
 def Create_Rdn_PPL():
 	pseudo = names.get_last_name()+str(random.randint(1,99))
+	charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*:/;."
 	user = {
 		"pseudo":pseudo,
 		"email":pseudo+'@tempr.email',
-		"password":''.join(random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*:/;.") for i in range(12)),
+		"password":''.join(random.choice(charset) for i in range(12)),
 		"team":pseudo+"_Team",
-		"team_password":''.join(random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-*:/;.") for i in range(12)),
+		"team_password":''.join(random.choice(charset) for i in range(12)),
 	}
 	return user
 
@@ -54,3 +65,15 @@ def Get_ChallMSG(chall,url):
 	for f in chall['files']:
 		message += '- %s%s'%(url,f)
 	return message
+
+def Init():
+	if not os.path.exists('./config'):
+		os.mkdir('config')
+	if not os.path.exists('./config/example.json'):
+		data  = '{"team":"TeamExample","teampwd":"123IamRo0t!'
+		data += '","users":[["PlayerNumber1","playerNumber1@pro'
+		data += 'tonmail.com","Player1Password"],["PlayerNumber2"'
+		data += ',"playerNumber2@protonmail.com","Player2Password'
+		data += '"],["PlayerNumber3","playerNumber3@protonmail.co'
+		data += 'm","Player3Password"]]}'
+		open('./config/example.json','w').write(data)

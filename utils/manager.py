@@ -31,7 +31,7 @@ async def Create_Category(guild,ctx,category):
 		if(obj.name == category):
 			return obj.name
 	res = await ctx.guild.create_category(category)
-	logger('Creating Category "%s".'%(category),"info",1,1)
+	logger('Creating Category "%s".'%(category),"warning",0,2)
 	return res.name
 
 
@@ -41,7 +41,7 @@ async def Create_Channel(bot,ctx,category,channel):
 		category=discord.utils.get(ctx.guild.categories,name=category),
 		name=channel)
 	if not query:
-		logger('Creating Channel "%s" in "%s".'%(channel,category),"info",1,1)
+		logger('Creating Channel "%s" in "%s".'%(channel,category),"warning",0,2)
 		return await ctx.guild.create_text_channel(
 			channel,
 			category=discord.utils.get(ctx.guild.categories,name=category)
@@ -55,13 +55,13 @@ async def Create_Thread(bot,ctx,category,name):
 	try:
 		thread = await message.create_thread(name=message.content)
 		channel = bot.get_channel(message.id)
-		logger('Creating Thread "%s".'%(message.content),"info",1,1)
+		logger('Creating Thread "%s".'%(message.content),"warning",0,2)
 		if(channel):
 			return channel
 	except Exception as ex:
-		logger('Failed to Create Channel: %s'%message.content,"error",1,0)
-		logger(str(ex),"error",0,0)
+		logger('Failed to Create Channel: %s'%message.content,"error",0,1)
+		logger(str(ex),"error",0,1)
 		if ('We are being rate limited' in str(ex)):
-			logger('Timeout ! Waiting 5 seconds',"error",0,2)
+			logger('Timeout ! Waiting 5 seconds',"error",1,2)
 			time.sleep(5000)
 	return None

@@ -30,7 +30,7 @@ async def Register_Random(ctx,url):
 		username,passw = user['pseudo'],user['password']
 		logger('Account Created: %s | %s'%(username,passw),'log',0,1)
 		return user
-	return None,None
+	return {'pseudo':'','password':''}
 
 def CheckTeam_User(session,user,url):
 	try:
@@ -40,6 +40,29 @@ def CheckTeam_User(session,user,url):
 	except Exception as ex:
 		logger("Error to check user account : %s"%str(ex),"error",1,0)
 	return False
+
+def CheckUser_Exist(session,user,url):
+	try:
+		resp = session.get(url+'/users?field=name&q=%s'%user['pseudo']).text.replace("\n","").replace("\t","")
+		all_ = list(zip(*list(re.findall(r'<a href="/users/(.*?)">(.*?)</a>',resp))))
+		if(len(all_) != 0):
+			if(user["pseudo"].lower() in list((map(lambda x: x.lower(), all_[1])))):
+				return True  
+		return False
+	except Exception as ex:
+		logger(" [+] Error to check if user exist : %s"%str(ex),"error",1,0)
+		return False
+
+def Join_Team(session,user,url):
+	try:
+		html = session.get(url + "/teams/join").text
+		token = re.search(r"csrfNonce': \"(.*?)\",",html).group(1); # Get token csrf
+		post = {"name":user["team"],"password":user["team_password"],"_submit":"Join","nonce":token}	# Post Data
+		resp = session.post(url+'/teams/join',post).text	# Create Team
+		return CheckTeam_User(session,user,url)
+	except Exception as ex:  
+		logger(" [+] Error to join the team : %s"%str(ex),"error",1,0)
+		return False
 
 def Create_Team(session,user,url):
 	try:
@@ -56,6 +79,18 @@ def Create_Team(session,user,url):
 		logger("Error during team creation : %s"%str(ex),"error",1,0)
 		return False
 
+def CheckTeam_Exist(session,user,url):
+	try:
+		resp = session.get(url+'/teams?field=name&q=%s'%user['team']).text
+		all_ = list(zip(*list(re.findall(r'<a href="/teams/(.*?)">(.*?)</a>',resp))))
+		if(len(all_) != 0):
+			if(user["team"].lower() in list((map(lambda x: x.lower(), all_[1])))):
+				return True  
+		return False
+	except Exception as ex:
+		logger(" [+] Error to check if team exist : %s"%str(ex),"error",1,0)
+		return False
+
 def Register_Account(session,user,url):
 	try:
 		html = session.get("%s/register"%url).text
@@ -70,17 +105,30 @@ def Register_Account(session,user,url):
 		return True if('Logout' in rep) else False
 	except Exception as ex:
 		logger("Error during registration : %s"%str(ex),"error",1,0)
+		return False,False
+
+def Login_Account(session,user,url):
+	nonce = Get_Nonce(url,session)
+	rep = session.post('%s/login'%url,
+		data={
+			'name': user['pseudo'],
+			'password': user['password'],
+			'nonce': nonce,
+		}
+	)
+	if('Logout' in rep.text):
+		return True
+	else:
 		return False
 
-
-
-async def Login(ctx,username,password,url,config):	
+async def Login4Parsing(ctx,username,password,url,config):	
 	if(not username or not password):
 		return False,None
 
+	session = requests.session()
+
 	# Login Using Token
-	if 'CTFD_TOKEN' in config.keys():
-		session = requests.session()
+	if 'CTFD_TOKEN' in config.keys():		
 		await ctx.send('**[+] Login using token ...**')
 		session.headers.update({
 			"Content-Type": "application/json",
@@ -104,18 +152,9 @@ async def Login(ctx,username,password,url,config):
 		return False,None
 
 	# Login Using Credentials
-	session = requests.session()
-	nonce = Get_Nonce(url,session)
-	res = session.post('%s/login'%url,
-		data={
-			'name': username,
-			'password': password,
-			'nonce': nonce,
-		}
-	)
-	if 'Logout' in res.text:
+	session.cookies.clear()
+	if(Login_Account(session,{"pseudo":username,"password":password},url)):
 		return True,session
-	elif 'incorrect' in res.text:
-		await ctx.send('**Unable to Login With those credentials**')
+	else:
 		logger('Unable to Login With those credentials','error',0,1)
-	return False,None
+		return False,None
