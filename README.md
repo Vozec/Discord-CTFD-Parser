@@ -63,6 +63,18 @@ There are 3 type of parsing for the creation of the discord architecture:
 ?help
   -> Display this menu
 ```
+### Config Example for Team Registration :  
+```json
+{
+    "team":"TeamExample",
+    "teampwd":"123IamRo0t",
+    "users": [
+        ["PlayerNumber1","playerNumber1@protonmail.com","Player1Password"],
+        ["PlayerNumber2","playerNumber2@protonmail.com","Player2Password"],
+        ["PlayerNumber3","playerNumber3@protonmail.com","Player3Password"]
+    ]
+}
+```
 
 ### Example : 
 
