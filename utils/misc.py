@@ -4,7 +4,7 @@
 # _date_ : 20/08/2022
 
 from requests.compat import urlparse
-import names,random,re,requests,os.path
+import names,random,re,requests,os.path,json
 
 def isAdmin(ctx):
 	return ctx.author.guild_permissions.manage_channels
@@ -70,10 +70,25 @@ def Init():
 	if not os.path.exists('./config'):
 		os.mkdir('config')
 	if not os.path.exists('./config/example.json'):
-		data  = '{"team":"TeamExample","teampwd":"123IamRo0t!'
-		data += '","users":[["PlayerNumber1","playerNumber1@pro'
-		data += 'tonmail.com","Player1Password"],["PlayerNumber2"'
-		data += ',"playerNumber2@protonmail.com","Player2Password'
-		data += '"],["PlayerNumber3","playerNumber3@protonmail.co'
-		data += 'm","Player3Password"]]}'
-		open('./config/example.json','w').write(data)
+		data = {
+		  "team": "TeamExample",
+		  "teampwd": "123IamRo0t!",
+		  "users": [
+		    [
+		      "PlayerNumber1",
+		      "playerNumber1@protonmail.com",
+		      "Player1Password"
+		    ],
+		    [
+		      "PlayerNumber2",
+		      "playerNumber2@protonmail.com",
+		      "Player2Password"
+		    ],
+		    [
+		      "PlayerNumber3",
+		      "playerNumber3@protonmail.com",
+		      "Player3Password"
+		    ]
+		  ]
+		}
+		open('./config/example.json','w').write(json.dumps(data, indent=4))
