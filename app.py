@@ -37,6 +37,7 @@ async def help(ctx,message=None):
 	embed = discord.Embed(title="Help Menu", description="",color=0x00ff00)
 	embed.add_field(name='%sCreateCTFD <Url> <Mode> <Username> <Password>'%config['PREFIX'],value='Parse & Create Channels/Categories/Threads for CTF CTFd-based',inline=False)
 	embed.add_field(name='%stoken <mytoken>'%config['PREFIX'],value='Set token account to login & bypass recaptcha',inline=False)
+	embed.add_field(name='%sflag '%config['PREFIX'],value='Add \'🚩\' to the name of a channel',inline=False)	
 	embed.add_field(name='%sgen <url>'%config['PREFIX'],value='Generate new random credentials',inline=False)
 	embed.add_field(name='%sgenteam <url> <config>'%config['PREFIX'],value='Generate a full team on the CTFd , based on config provided in input or using .json files',inline=False)
 	embed.add_field(name='%snext <days>'%config['PREFIX'],value='Return the next ctfs that will take place in a few days',inline=False)	
@@ -68,6 +69,18 @@ async def next(ctx,day=7):
 		await ctx.send('**Invalid Channel ! "next" in channel name required **')
 
 @bot.command()
+async def flag(ctx):
+	Thread_name = ctx.message.channel.name
+	if Thread_name[0] == "🚩":
+		await ctx.reply("**%s already flagged**"%Thread_name.split('|')[0].strip())
+	else:
+		new_Thread_name = "🚩" + Thread_name
+		await ctx.message.channel.edit(name=new_Thread_name)
+		await ctx.send('**%s has been flagged !**'%Thread_name)
+		logger("%s has been flagged !"%Thread_name,"log",0,1)
+		await ctx.message.delete()
+
+@bot.command()
 async def genteam(ctx,url,config=None):
 	if url is not None and config is not None:
 		current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -82,7 +95,6 @@ async def genteam(ctx,url,config=None):
 			await ctx.send('**Invalid Parameter ! config \'%s\' doesn\'t exist**'%path)
 	else:
 		await ctx.send('**Invalid Parameter ! \'url\' & \'config\' required **')
-
 
 
 @bot.command()
