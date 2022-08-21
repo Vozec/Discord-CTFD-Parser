@@ -1,4 +1,6 @@
 import time,discord
+from rich import progress
+from datetime import datetime
 
 from utils.misc import Resolve_CTF,Cleaner,Get_ChallMSG
 from utils.logger import logger
@@ -12,18 +14,20 @@ async def Result_manager(bot,ctx,url,challenges,config,mode='1'):
 	category = await Create_Category(bot,ctx,category)
 	main 	 = await Create_Channel(bot,ctx,category,Cleaner(ctf_name))
 	await main.send('**Url:** %s'%url)
-
-	for chall in challenges:
-		if(mode == '1'):
-			main = await Create_Channel(bot,ctx,category,Cleaner(chall['category']))
-		if(mode == '3'):
-			sender = await Create_Channel(bot,ctx,category,Cleaner(chall['name']))
-		else:
-			sender = await Create_Thread(bot,main,chall['category'],chall['name'])
-		if(sender):				
-			await sender.send(Get_ChallMSG(chall,url))
-		else:
-			challenges.append(chall) # If fail => chall go back in list
+	with progress.Progress() as p:
+		progress_bar = p.add_task("%s | \t "%datetime.now().strftime("%H:%M:%S"), total=len(challenges))
+		for chall in challenges:
+			if(mode == '1'):
+				main = await Create_Channel(bot,ctx,category,Cleaner(chall['category']))
+			if(mode == '3'):
+				sender = await Create_Channel(bot,ctx,category,Cleaner(chall['name']))
+			else:
+				sender = await Create_Thread(bot,main,chall['category'],chall['name'])
+			if(sender):
+				p.update(progress_bar, advance=1)		
+				await sender.send(Get_ChallMSG(chall,url))
+			else:
+				challenges.append(chall) # If fail => chall go back in list
 
 
 async def Create_Category(guild,ctx,category):
