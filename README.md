@@ -51,7 +51,11 @@ There are 3 type of parsing for the creation of the discord architecture:
   -> Try to generate new random credentials
 ```
 ```
-?next <days>
+?genteam <Url>
+  -> Generate a full team on the CTFd , based on config provided in input or using .json files
+```
+```
+?next <Url> <Config.json>
   -> Return the next ctfs that will take place in a few days
 ```
 ```
