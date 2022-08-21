@@ -68,3 +68,5 @@ There are 3 type of parsing for the creation of the discord architecture:
 ![Alt text](./github/4.png)  
 
 ![Alt text](./github/5.png)
+
+![Alt text](./github/6.png)
