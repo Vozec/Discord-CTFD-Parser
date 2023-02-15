@@ -18,6 +18,7 @@ from utils.manager   import *
 from utils.modules.ctftime   import *
 from utils.modules.autoteams import *
 
+
 config = {
 	'TOKEN':env['DISCORD_TOKEN'],
 	'PREFIX':'?',
