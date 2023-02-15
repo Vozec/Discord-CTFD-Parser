@@ -60,7 +60,7 @@ There are 3 type of parsing for the creation of the discord architecture:
   -> Generate a full team on the CTFd , based on config provided in input or using .json files
 ```
 ```
-?next <Url> 
+?next <days> 
   -> Return the next ctfs that will take place in a few days
 ```
 ```
