@@ -1,7 +1,6 @@
-discord==1.7.3
+py-cord==2.0.0b1
 discord.py==1.7.3
 requests==2.27.1
 typing_extensions==4.1.0
-py-cord==2.0.0b1
 names==0.3.0
 rich==12.5.1

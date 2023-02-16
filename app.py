@@ -4,19 +4,21 @@
 # _date_ : 20/08/2022
 
 import discord
-from os		  import environ as env
-from os.path	 import exists
 from discord.ext import commands
-from requests	import session
+
+from os		  import environ as env
+from os.path  import exists
+from requests import session
 
 from utils.logger	import logger
-from utils.misc		 import *
-from utils.account   import *
+from utils.misc		import *
+from utils.account  import *
 from utils.parser	import *
-from utils.manager   import *
+from utils.manager  import *
 
 from utils.modules.ctftime   import *
 from utils.modules.autoteams import *
+
 
 
 config = {
@@ -24,9 +26,13 @@ config = {
 	'PREFIX':'?',
 	'CATEGORY':'CTF',
 	'DESCRIPTION':'CTFd Parser BOT',
+	'SCAN_URL':'http://flag-poisoning.fr:8080'
 }
 
-bot	= commands.Bot(command_prefix=config['PREFIX'], description=config['DESCRIPTION'], help_command=None)
+intents = discord.Intents.default()
+intents.message_content = True
+bot	= commands.Bot(command_prefix=config['PREFIX'], description=config['DESCRIPTION'], help_command=None,intents=intents)
+
 
 @bot.event
 async def on_ready():

@@ -25,7 +25,7 @@ async def Result_manager(bot,ctx,url,challenges,config,mode='1'):
 				sender = await Create_Thread(bot,main,chall['category'],chall['name'])
 			if(sender):
 				p.update(progress_bar, advance=1)		
-				await sender.send(Get_ChallMSG(chall,url))
+				await sender.send(Get_ChallMSG(chall,url,config))
 			else:
 				challenges.append(chall) # If fail => chall go back in list
 
@@ -63,7 +63,7 @@ async def Create_Thread(bot,ctx,category,name):
 		if(channel):
 			return channel
 	except Exception as ex:
-		logger('Failed to Create Channel: %s'%message.content,"error",0,1)
+		logger('Failed to Create Channel: %s'%message.content,"error",1,1)
 		logger(str(ex),"error",0,1)
 		if ('We are being rate limited' in str(ex)):
 			logger('Timeout ! Waiting 5 seconds',"error",1,2)

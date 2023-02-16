@@ -6,6 +6,8 @@
 from requests.compat import urlparse
 import names,random,re,requests,os.path,json
 
+from utils.scan import scan_file
+
 def isAdmin(ctx):
 	return ctx.author.guild_permissions.manage_channels
 
@@ -45,7 +47,7 @@ def Cleaner(name):
 	return re.sub(r'[^\w]','', name).lower()
 
 
-def Get_ChallMSG(chall,url):
+def Get_ChallMSG(chall,url,config):
 	message	= '''
 **Name**: %s
 **Points**: %s
@@ -59,11 +61,14 @@ def Get_ChallMSG(chall,url):
 			chall['category'],
 			chall['max_attempts'],
 			chall['infos'])
-
+	
 	if(len(chall['files']) > 0):
-		message += '**File(s)**:'
+		message += '**File(s)**:\n'
 	for f in chall['files']:
 		message += '- %s%s'%(url,f)
+		scan = scan_file(url+f,config)
+		if scan:
+			message += '\n``Scan Url``: %s\n'%(scan)
 	return message
 
 def Init():
