@@ -25,7 +25,8 @@ docker build \
 	--build-arg DEEPL_TOKEN='PLACE-YOUR-TOKEN-HERE' \
 	--build-arg DISCORD_TOKEN='PLACE-YOUR-TOKEN-HERE' \
 	.
-
+docker run --rm -it bot_discord
+# use -d option to run the docker in background
 ```
 
 ## Modes
