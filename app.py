@@ -25,7 +25,7 @@ config = {
 	'PREFIX':'?',
 	'CATEGORY':'CTF',
 	'DESCRIPTION':'CTFd Parser BOT',
-	'DEEPL_KEY':'d92e2e38-fcf1-d4e6-dff0-0595d5bb0b99:fx',
+	'DEEPL_KEY':env['DEEPL_TOKEN'],
 }
 
 translator = deepl.Translator(config['DEEPL_KEY']) if config['DEEPL_KEY'] else None
@@ -45,6 +45,8 @@ async def help(ctx,message=None):
 	embed.add_field(name='%sflag '%config['PREFIX'],value='Add \'🚩\' to the name of a channel',inline=False)	
 	embed.add_field(name='%sgen <url>'%config['PREFIX'],value='Generate new random credentials',inline=False)
 	embed.add_field(name='%sgenteam <url> <config>'%config['PREFIX'],value='Generate a full team on the CTFd , based on config provided in input or using .json files',inline=False)
+	embed.add_field(name='%sf2e <msg>'%config['PREFIX'],value='Translate the french message in english',inline=False)	
+	embed.add_field(name='%se2f <msg>'%config['PREFIX'],value='Translate the english message in french',inline=False)	
 	embed.add_field(name='%snext <days>'%config['PREFIX'],value='Return the next ctfs that will take place in a few days',inline=False)	
 	embed.add_field(name='%shelp'%config['PREFIX'],	value='Display this menu',inline=False)
 	await ctx.send(embed=embed)
