@@ -4,35 +4,33 @@
 # _date_ : 20/08/2022
 
 import discord
-from discord.ext import commands
-
+import deepl
 from os		  import environ as env
-from os.path  import exists
-from requests import session
+from os.path	 import exists
+from discord.ext import commands
+from requests	import session
 
 from utils.logger	import logger
-from utils.misc		import *
-from utils.account  import *
+from utils.misc		 import *
+from utils.account   import *
 from utils.parser	import *
-from utils.manager  import *
+from utils.manager   import *
 
 from utils.modules.ctftime   import *
 from utils.modules.autoteams import *
-
-
+from utils.modules.translator import *
 
 config = {
 	'TOKEN':env['DISCORD_TOKEN'],
 	'PREFIX':'?',
 	'CATEGORY':'CTF',
 	'DESCRIPTION':'CTFd Parser BOT',
-	'SCAN_URL':'http://flag-poisoning.fr:8080'
+	'DEEPL_KEY':'d92e2e38-fcf1-d4e6-dff0-0595d5bb0b99:fx',
 }
 
-intents = discord.Intents.default()
-intents.message_content = True
-bot	= commands.Bot(command_prefix=config['PREFIX'], description=config['DESCRIPTION'], help_command=None,intents=intents)
+translator = deepl.Translator(config['DEEPL_KEY']) if config['DEEPL_KEY'] else None
 
+bot	= commands.Bot(command_prefix=config['PREFIX'], description=config['DESCRIPTION'], help_command=None,intents = discord.Intents.all())
 
 @bot.event
 async def on_ready():
@@ -126,6 +124,22 @@ async def gen(ctx,url):
 			await ctx.send(embed=embed)
 		else:
 			await ctx.send("**Failed to Create account ...**") 
+
+@bot.command()
+async def f2e(ctx,msg):
+	if msg:
+		logger("Translating '%s' to english"%(msg),"log",0,0)
+		res = translate_to_english(ctx,translator,msg)
+		await ctx.message.delete()
+		await ctx.send(embed=res) 
+
+@bot.command()
+async def e2f(ctx,msg):
+	if msg:
+		logger("Translating '%s' to english"%(msg),"log",0,0)
+		res = translate_to_french(ctx,translator,msg)
+		await ctx.message.delete()
+		await ctx.send(embed=res) 
 
 
 @bot.command()
