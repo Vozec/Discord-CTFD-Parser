@@ -14,9 +14,20 @@ python3 -m pip install -r requirements.txt
 - Copy the ``TOKEN`` in the ``BOT`` section
 - Create a server on discord and invit your bot using the ``URL generator`` *(OAuth2 section)*
 ```bash
+export DEEPL_TOKEN='PLACE-YOUR-TOKEN-HERE'
 export DISCORD_TOKEN='PLACE-YOUR-TOKEN-HERE'
 python3 app.py
 ```
+or using Docker
+```bash
+docker build \
+	-t bot_discord \
+	--build-arg DEEPL_TOKEN='PLACE-YOUR-TOKEN-HERE' \
+	--build-arg DISCORD_TOKEN='PLACE-YOUR-TOKEN-HERE' \
+	.
+
+```
+
 ## Modes
 There are 3 type of parsing for the creation of the discord architecture:
 
@@ -62,6 +73,14 @@ There are 3 type of parsing for the creation of the discord architecture:
 ```
 ?next <days> 
   -> Return the next ctfs that will take place in a few days
+```
+```
+?f2e <msg> 
+  -> Translate the french message in english
+```
+```
+?e2f <msg> 
+  -> Translate the english message in french
 ```
 ```
 ?help
